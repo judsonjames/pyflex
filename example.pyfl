@@ -1,0 +1,23 @@
+###############################################################################
+# Authors: Judson James, Peyton Chandarana
+# Purpose: Example of pyflex file, giving the syntax ruleset and their
+#          interpretations.
+###############################################################################
+
+# start ruleset
+whitespace              [\t ]
+digit                   [0-9]
+const                   {digit}+
+alpha                   [A-Za-z]
+
+# end ruleset
+%%
+# start interpretation
+
+{whitespace}+           {}
+
+{alpha}                 ProcessCharacter(yytext)
+
+{const}                 ProcessConst(yytext)
+
+# end interpretation
