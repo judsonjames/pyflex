@@ -16,8 +16,16 @@ alpha                   [A-Za-z]
 
 {whitespace}+           {}
 
-{alpha}                 ProcessCharacter(yytext)
+{alpha}                 PrintCharacter(val)
 
-{const}                 ProcessConst(yytext)
+{const}                 PrintConstant(val)
 
 # end interpretation
+%%
+# start code
+def PrintCharacter(val: str) -> None:
+    print(val)
+
+def PrintConstant(val: int) -> None:
+    print(val)
+# end code
