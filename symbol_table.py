@@ -1,4 +1,4 @@
 class SymbolTable(object):
-    rulset = dict()
+    ruleset = dict()
     instructions = dict()
     code = list()

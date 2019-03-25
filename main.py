@@ -5,22 +5,30 @@ import sys
 from parser import Parser
 from symbol_table import SymbolTable
 
+
 def main() -> None:
     # The first thing to do is get the lines of the PyFlex file we are given.
-    parser = Parser()
-    parsed_data = parser.ParseFile(filename=sys.argv[1])
+    parser = Parser(filename=sys.argv[1])
+    parsed_data = parser.ParseFile()
 
+    SymbolTable.ruleset = parsed_data['ruleset']
+    SymbolTable.instructions = parsed_data['instructions']
+    SymbolTable.code = parsed_data['code']
+    PrintTable()
+
+
+def PrintTable():
     print('RULESET')
-    for value in parsed_data['ruleset']:
-        print(value)
+    for key in SymbolTable.ruleset:
+        print(key, SymbolTable.ruleset[key])
 
-    print('INSTRUCTIONS')
-    for value in parsed_data['instructions']:
-        print(value)
+    print('\nINSTRUCTIONS')
+    for key in SymbolTable.instructions:
+        print(key, SymbolTable.instructions[key])
 
-    print('CODE')
-    for value in parsed_data['code']:
-        print(value)
+    print('\nCODE')
+    for line in SymbolTable.code:
+        print(line)
 
 if __name__ == "__main__":
     if len(sys.argv) != 2:

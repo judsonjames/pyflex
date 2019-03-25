@@ -13,11 +13,9 @@ alpha                   [A-Za-z]
 # end ruleset
 %%
 # start interpretation
-
-{whitespace}+           {}
-
+"test phrase"           PrintTest(val)
+{whitespace}+           Nothing()
 {alpha}                 PrintCharacter(val)
-
 {const}                 PrintConstant(val)
 
 # end interpretation
