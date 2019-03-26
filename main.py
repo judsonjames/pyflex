@@ -8,34 +8,48 @@ from symbol_table import SymbolTable
 
 
 def main() -> None:
+    """ main
+    Driver function for PyFlex program
+    """
     # The first thing to do is get the lines of the PyFlex file we are given.
     parser = Parser(filename=sys.argv[1])
     parsed_data = parser.ParseFile()
 
-    SymbolTable.ruleset = parsed_data['ruleset']
-    SymbolTable.instructions = parsed_data['instructions']
-    SymbolTable.code = parsed_data['code']
+    # Upon retrieving the Parsed Data, assign the parsed data to the 
+    # Symbol Table.
+    SymbolTable.RULESET = parsed_data['ruleset']
+    SymbolTable.INSTRUCTIONS = parsed_data['instructions']
+    SymbolTable.CODE = parsed_data['code']
+    
+    # Print to confirm everything
     PrintTable()
 
 
 def PrintTable():
+    """ Helper Function to Print the current state of the Symbol Table
+    """
     print('RULESET')
-    for key in SymbolTable.ruleset:
-        print(key, SymbolTable.ruleset[key])
+    for key in SymbolTable.RULESET:
+        print(key, SymbolTable.RULESET[key])
 
     print('\nINSTRUCTIONS')
-    for key in SymbolTable.instructions:
-        print(key, SymbolTable.instructions[key])
+    for key in SymbolTable.INSTRUCTIONS:
+        print(key, SymbolTable.INSTRUCTIONS[key])
 
     print('\nCODE')
-    for line in SymbolTable.code:
+    for line in SymbolTable.CODE:
         print(line)
 
+###############################################################################
+# Main Functionality
+# Checks for input:
+#   - Confirms that there are three arguments
+#   - Confirms that the second argument is the pyflex file
+#   - Confirms that the third argument is an existing input file
 if __name__ == "__main__":
-    if len(sys.argv) != 5:
-        print("Usage: python3 main.py {} {} {} {}".
-              format('<pyflex_file>', '<input_file>',
-                     '<output_file>', '<log_file>'))
+    if len(sys.argv) != 3:
+        print("Usage: python3 main.py {} {}".
+              format('<pyflex_file>', '<input_file>'))
         print("Your arguments were: {}".format(sys.argv))
     elif sys.argv[1].split('.')[1] != 'pyfl':
         print("Invalid argument: {}, must be of filetype <filename>.pyfl"

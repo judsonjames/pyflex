@@ -14,6 +14,7 @@ class ParseState(Enum):
 
 class Parser():
     """ Parser
+    Parser Object to parse a .pyflex file.
     """
     def __init__(self, filename: str):
         self.filename = filename
@@ -22,13 +23,18 @@ class Parser():
         self.code_start = 0
 
     def ParseFile(self) -> dict:
+        """ Parse File
+        Main "driver" of the Parser Object.
+        The program calls a number of 'private' methods to return a
+        formated dictionary for 'ruleset', 'instructions', and 'code'.
+        """
         file_lines = FileReader.FileToLines(filename=self.filename)
-        file_lines = self.RemoveComments(file_lines)
-        sections_dict = self.SeparateBySections(file_lines)
-        sections_dict = self.FormatSections(sections_dict)
+        file_lines = self.__RemoveComments(file_lines)
+        sections_dict = self.__SeparateBySections(file_lines)
+        sections_dict = self.__FormatSections(sections_dict)
         return sections_dict
 
-    def RemoveComments(self, lines: list) -> list:
+    def __RemoveComments(self, lines: list) -> list:
         """ Remove Comments
         Method to remove the commented lines from the file.
         The comments follow the style of Python. Using the '#' character.
@@ -41,7 +47,7 @@ class Parser():
                 no_comments.append(line)
         return no_comments
 
-    def SeparateBySections(self, lines: list) -> dict:
+    def __SeparateBySections(self, lines: list) -> dict:
         """ Separate By Sections
         Separate the lines by the following sections:
         ruleset, instructions, and code
@@ -74,7 +80,7 @@ class Parser():
                 break
         return sections_dict
 
-    def FormatSections(self, sections_dict: dict) -> dict:
+    def __FormatSections(self, sections_dict: dict) -> dict:
         """ Format Sections
         This method recieves the sections dictionary, which contains each
         section of the pyflex file, and reformats it such that their is a
@@ -147,8 +153,6 @@ class Parser():
         # We can just copy the code section of the input dictionary to the
         # output dictionary
         ret_dict['code'] = sections_dict['code']
-        # print("Ruleset:\n\t{}".format(ret_dict['ruleset']))
-        # print("Instructions:\n\t{}".format(ret_dict['instructions']))
         return ret_dict
 
 

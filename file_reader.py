@@ -1,6 +1,7 @@
 ###############################################################################
 # Author:  Judson James
 # Purpose: Simple library to return lines of a file
+#          This was borrowed from Judson' personal stash of helper functions.
 
 
 class FileReader(object):
