@@ -12,5 +12,5 @@
   pipenv sync
 
   # Execute this program
-  pipenv run python3 main.py
+  pipenv run python3 main.py <pyflex_file> <input_file>
   ```
