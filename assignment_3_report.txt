@@ -45,7 +45,8 @@ the pyflex program that will begin trying to find matches to the specified
 patterns that were defined in the rule set/preamble. 
 
 For Assignment 03 when main.py is ran with the a pyfl file and some input file 
-the different sections of the pyfl file are first interpreted by a parser, stored, and then dumped to stdout. This shows that we are able to read the
+the different sections of the pyfl file are first interpreted by a parser, 
+stored, and then dumped to stdout. This shows that we are able to read the
 specifications of patterns in the pyfl file and that we can then use these
 patterns to generate the pattern matching code and then start matching data 
 in the input file. This the rest of the program that actually generates this
