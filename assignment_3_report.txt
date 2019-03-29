@@ -27,7 +27,8 @@ patterns (rules) to find/match in an input file. This input file is comprised of
 some arbitrary python code or in the case of this course the input will be some 
 kind of tagged data like the COCA data. 
 
-The pyfl file is divided up into three parts:
+The pyfl file is divided up into three parts. These parts are divided up using
+two percent signs "%%" on their own line:
 
 The first section of the file is called the rule set. This is where patterns
 can be defined as variables to make the second section more readable with
