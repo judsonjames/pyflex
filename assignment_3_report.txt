@@ -27,22 +27,17 @@ patterns (rules) to find/match in an input file. This input file is comprised of
 some arbitrary python code or in the case of this course the input will be some 
 kind of tagged data like the COCA data. 
 
-The pyfl file is divided up into three parts:
+The pyfl file is divided up into two parts unlike the the lex file in C.
 
-The first section of the file is called the preamble. This section contains 
-the python packages required as well as specifying patterns as definitions
-that act like variables for storing regular expression patterns.
+The first section of the file is called the rule set. This is where the
+the flex program will take the patterns specified in it and use them to find 
+matches. When matches to the regular expression patterns are found, some python 
+code or function is executed as a direct result.
 
-The second section of the file is called the rule set. This is where the
-the flex program will take the patterns specified in it or previously in the
-preamble as definitions/variables and use them to find matches. When matches to 
-the regular expression patterns are found, some python code or function is 
-executed as a direct result.
-
-The third and final section of the pyfl file is the utilites section. This
-region is comprised of just python code. The python code here usually starts
-the pyflex program that will begin trying to find matches to the specified
-patterns that were defined in the rule set/preamble. 
+The second section of the pyfl file is the utilites/code section. This
+region is comprised of the required python packages and just python code. 
+The python code here usually starts the pyflex program that will begin trying 
+to find matches to the specified patterns that were defined in the rule set. 
 
 For Assignment 03 when main.py is ran with the a pyfl file and some input file 
 the different sections of the pyfl file are first interpreted by a parser, 
