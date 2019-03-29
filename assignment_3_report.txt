@@ -10,7 +10,7 @@ Project:    Assignment 3 Report
 ********************************************************************************
 README:
 
-NOTE: Regular expression is used interchangably with patterns.
+NOTE: "regular expression" is used interchangably with "pattern".
 
 -Summary of Purpose:
   The purpose of this project is to create a python program that has the same
@@ -30,27 +30,26 @@ kind of tagged data like the COCA data.
 The pyfl file is divided up into three parts:
 
 The first section of the file is called the preamble. This section contains 
-the python packages required as well as specifying patterns as variables
-that you can use instead of patterns in the second section of the file
-(the rule set). 
+the python packages required as well as specifying patterns as definitions
+that act like variables for storing regular expression patterns.
 
 The second section of the file is called the rule set. This is where the
 the flex program will take the patterns specified in it or previously in the
-preamble and use them to find matches. When matches to the regular expression
-patterns are found, some python code or function is executed as a direct
-result of that match.
+preamble as definitions/variables and use them to find matches. When matches to 
+the regular expression patterns are found, some python code or function is 
+executed as a direct result.
 
 The third and final section of the pyfl file is the utilites section. This
 region is comprised of just python code. The python code here usually starts
 the pyflex program that will begin trying to find matches to the specified
-patterns. 
+patterns that were defined in the rule set/preamble. 
 
-For Assignment 03 when main.py is ran with the the pyfl file as the first 
-arugment and the input file as the second argument the different sections of the
-pyfl file are dumped to stdout. This shows that we are able to read the
+For Assignment 03 when main.py is ran with the a pyfl file and some input file 
+the different sections of the pyfl file are first interpreted by a parser, stored, and then dumped to stdout. This shows that we are able to read the
 specifications of patterns in the pyfl file and that we can then use these
 patterns to generate the pattern matching code and then start matching data 
-in the input file.
+in the input file. This the rest of the program that actually generates this
+pattern matching code will be implemented in the final project.
 
 -Future Implementations:
   The rest of this project will be completed in the final project of CSCE 578.
