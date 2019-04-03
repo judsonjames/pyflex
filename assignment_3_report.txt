@@ -1,0 +1,70 @@
+********************************************************************************
+Authors:    Peyton Chandarana
+            Judson James
+
+Date:       03/29/2019
+Course:     CSCE 578
+Semester:   Spring 2019
+
+Project:    Assignment 3 Report
+********************************************************************************
+README:
+
+NOTE: "regular expression" is used interchangably with "pattern".
+
+-Summary of Purpose:
+  The purpose of this project is to create a python program that has the same
+functionality as the flex lexical analyzer that works with C. We are calling
+this program pyflex and will be using similar file structures that are used with
+the C version of the program.
+
+-Current Progress:
+  The first part of the project, the part we are submitting for Assignment 03,
+deals with getting the specifications for pattern matching. We do this by taking
+in a file with the pyfl extension. This file is similar to the lex file that
+flex takes in. From this pyfl file, regular expressions are used to specify
+patterns (rules) to find/match in an input file. This input file is comprised of
+some arbitrary python code or in the case of this course the input will be some 
+kind of tagged data like the COCA data. 
+
+The pyfl file is divided up into three parts. These parts are divided up using
+two percent signs "%%" on their own line:
+
+The first section of the file is called the rule set. This is where patterns
+can be defined as variables to make the second section more readable with
+combining different regular expressions.
+
+The second section is called the interpretation section. This is where the
+the flex program will take the patterns specified in it and use them to find 
+matches. When matches to the regular expression patterns are found, some python
+code or function is executed as a direct result.
+
+The third section of the pyfl file is the utilites/code section. This
+region is comprised of the required python packages and just python code. 
+The python code here usually starts the pyflex program that will begin trying 
+to find matches to the specified patterns that were defined in the rule set. 
+
+For Assignment 03 when main.py is ran with the a pyfl file and some input file 
+the different sections of the pyfl file are first interpreted by a parser, 
+stored, and then dumped to stdout. This shows that we are able to read the
+specifications of patterns in the pyfl file and that we can then use these
+patterns to generate the pattern matching code and then start matching data 
+in the input file. This the rest of the program that actually generates this
+pattern matching code will be implemented in the final project.
+
+-Future Implementations:
+  The rest of this project will be completed in the final project of CSCE 578.
+So far we are able to get and interpret the specifications in the pyfl files. 
+Now that we have this step complete we can actually write the pyflex program 
+that will generate the pattern matching code specific for finding the patters
+specified in the pyfl file. After the pyflex python program is written we will
+be able to show that it works by doing Assignment 01 over again. 
+
+In Assignment 01 we dealt with finding verbs throughout two sets of data and
+computing their frequencies. We plan to reimplement this using our pyflex
+program with a specification pyfl file that looks for "_v" tags in input files.
+When the "_v" pattern is matched, a function is called with that verb as a
+parameter that looks in a python dict for the verb. If the verb is already in
+the dict then the value (the count) is increase by one. If the verb is not in
+the dict then the verb is placed in the dictionary and then the value (count)
+is increased by one.
