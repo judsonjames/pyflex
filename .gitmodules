@@ -1,0 +1,3 @@
+[submodule "pytils"]
+  path = pytils
+  url = https://github.com/judsonjames/pytils
