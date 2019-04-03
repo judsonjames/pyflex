@@ -3,8 +3,11 @@
 # Purpose: Driver program for the PyFlex interpretter and Analyzer
 import os
 import sys
-from parser import Parser
-from symbol_table import SymbolTable
+import atexit
+from pytils import EasyFileIO
+from pyflex_libs import SymbolTable
+from pyflex_libs import Parser
+from pyflex_libs import Generator
 
 
 def main() -> None:
@@ -15,30 +18,37 @@ def main() -> None:
     parser = Parser(filename=sys.argv[1])
     parsed_data = parser.ParseFile()
 
-    # Upon retrieving the Parsed Data, assign the parsed data to the 
+    # Upon retrieving the Parsed Data, assign the parsed data to the
     # Symbol Table.
     SymbolTable.RULESET = parsed_data['ruleset']
     SymbolTable.INSTRUCTIONS = parsed_data['instructions']
     SymbolTable.CODE = parsed_data['code']
-    
-    # Print to confirm everything
-    PrintTable()
+    # SymbolTable.PrintTable()
+
+    generator = Generator(folder='meta_data')
+    ###########################################################################
+    # At this point, we will create a new meta folder, which will contain a
+    # file that contains the Python code within the .pyflex file, a meta driver
+    # file that will be templated with pre-written code, and
+    # Creates the temporary Work Area for the PyFlex Interface
+    #
+    # NOTE not sure if this should be part of the Generator init, but
+    # if not, it's fine here.
+    if os.path.isfile(generator.path_temp):
+        EasyFileIO.CopyFile(original=generator.path_temp,
+                            copy=generator.path_meta)
+        EasyFileIO.LinesToFile(filename=generator.path_main,
+                               lines=(lines for lines in SymbolTable.CODE))
+
+    ###########################################################################
+    # Used to test running a new Python environment to run the newly created
+    # Python program
+    os.system('python3 meta_data/generated_main.py')
 
 
-def PrintTable():
-    """ Helper Function to Print the current state of the Symbol Table
-    """
-    print('RULESET')
-    for key in SymbolTable.RULESET:
-        print(key, SymbolTable.RULESET[key])
-
-    print('\nINSTRUCTIONS')
-    for key in SymbolTable.INSTRUCTIONS:
-        print(key, SymbolTable.INSTRUCTIONS[key])
-
-    print('\nCODE')
-    for line in SymbolTable.CODE:
-        print(line)
+@atexit.register
+def OnExit():
+    print("End Program")
 
 ###############################################################################
 # Main Functionality
