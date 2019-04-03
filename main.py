@@ -4,11 +4,10 @@
 import os
 import sys
 import atexit
-from parser import Parser
-from symbol_table import SymbolTable
-from file_io import FileWriter
-from file_io import FileReader
-from file_io import EasyFileIO
+from pytils import EasyFileIO
+from pyflex_libs import SymbolTable
+from pyflex_libs import Parser
+from pyflex_libs import Generator
 
 
 def main() -> None:
@@ -16,8 +15,7 @@ def main() -> None:
     Driver function for PyFlex program
     """
     # The first thing to do is get the lines of the PyFlex file we are given.
-    writer = FileWriter()
-    parser = Parser(filename=sys.argv[1], writer=writer)
+    parser = Parser(filename=sys.argv[1])
     parsed_data = parser.ParseFile()
 
     # Upon retrieving the Parsed Data, assign the parsed data to the
@@ -25,60 +23,27 @@ def main() -> None:
     SymbolTable.RULESET = parsed_data['ruleset']
     SymbolTable.INSTRUCTIONS = parsed_data['instructions']
     SymbolTable.CODE = parsed_data['code']
+    # SymbolTable.PrintTable()
 
-    # Print to confirm everything
-    PrintTable(writer=writer)
-
+    generator = Generator(folder='meta_data')
     ###########################################################################
     # At this point, we will create a new meta folder, which will contain a
     # file that contains the Python code within the .pyflex file, a meta driver
     # file that will be templated with pre-written code, and
     # Creates the temporary Work Area for the PyFlex Interface
-    meta_folder = 'meta_data'
-    meta_main = 'meta_main.py'
-    meta_code = 'meta_code.py'
-    meta_main_path = '{}/{}'.format(meta_folder, meta_main)
-    meta_code_path = '{}/{}'.format(meta_folder, meta_code)
-    template_folder = 'templates'
-    tempalte_main = 'template_driver.py'
-    template_path = '{}/{}'.format(template_folder, tempalte_main)
-
-    ###########################################################################
-    # This is just a matter of making a clean slate to work with
-    if os.path.isdir(meta_folder) is False:
-        os.mkdir(meta_folder)
-    if os.path.isdir(template_folder) is False:
-        print('The templates folder does not exist. Please reclone.')
-        exit(1)
-
-    ###########################################################################
-    # The following lines of code create the 'meta_code' that is generated from
-    # our code.
-    if os.path.isfile(template_path):
-        EasyFileIO.CopyFile(original=template_path, copy=meta_main_path)
-        FileWriter.LinesToFile(filename=meta_code_path,
+    #
+    # NOTE not sure if this should be part of the Generator init, but
+    # if not, it's fine here.
+    if os.path.isfile(generator.path_temp):
+        EasyFileIO.CopyFile(original=generator.path_temp,
+                            copy=generator.path_meta)
+        EasyFileIO.LinesToFile(filename=generator.path_main,
                                lines=(lines for lines in SymbolTable.CODE))
 
     ###########################################################################
     # Used to test running a new Python environment to run the newly created
     # Python program
-    os.system('python3 meta_data/meta_main.py')
-
-
-def PrintTable(writer: FileWriter):
-    """ Helper Function to Print the current state of the Symbol Table
-    """
-    print('RULESET')
-    for key in SymbolTable.RULESET:
-        print('{} {}'.format(key, SymbolTable.RULESET[key]))
-
-    print('INSTRUCTIONS')
-    for key in SymbolTable.INSTRUCTIONS:
-        print('{} {}'.format(key, SymbolTable.INSTRUCTIONS[key]))
-
-    print('CODE')
-    for line in SymbolTable.CODE:
-        print(line)
+    os.system('python3 meta_data/generated_main.py')
 
 
 @atexit.register

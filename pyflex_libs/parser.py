@@ -3,8 +3,7 @@
 # Purpose: Library used to read through a PyFlex file and create a custom
 #          ruleset to fit the ReGex rules.
 from enum import Enum
-from file_io import FileReader
-from file_io import FileWriter
+from pytils import EasyFileIO
 
 
 class ParseState(Enum):
@@ -17,9 +16,8 @@ class Parser():
     """ Parser
     Parser Object to parse a .pyflex file.
     """
-    def __init__(self, filename: str, writer: FileWriter):
+    def __init__(self, filename: str):
         self.filename = filename
-        self.Writer = writer
         self.ruleset_start = 0
         self.instruct_start = 0
         self.code_start = 0
@@ -30,7 +28,7 @@ class Parser():
         The program calls a number of 'private' methods to return a
         formated dictionary for 'ruleset', 'instructions', and 'code'.
         """
-        file_lines = FileReader.FileToLines(filename=self.filename)
+        file_lines = EasyFileIO.FileToLines(filename=self.filename)
         file_lines = self.__RemoveComments(file_lines)
         sections_dict = self.__SeparateBySections(file_lines)
         sections_dict = self.__FormatSections(sections_dict)

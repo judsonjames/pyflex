@@ -14,3 +14,17 @@ class SymbolTable(object):
     RULESET = dict()
     INSTRUCTIONS = dict()
     CODE = list()
+
+    @staticmethod
+    def PrintTable() -> str:
+        print('RULESET')
+        for key in SymbolTable.RULESET:
+            print('{} {}'.format(key, SymbolTable.RULESET[key]))
+
+        print('INSTRUCTIONS')
+        for key in SymbolTable.INSTRUCTIONS:
+            print('{} {}'.format(key, SymbolTable.INSTRUCTIONS[key]))
+
+        print('CODE')
+        for line in SymbolTable.CODE:
+            print(line)
