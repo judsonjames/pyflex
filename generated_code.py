@@ -1,3 +1,9 @@
+def PrintCharacter(val: str) -> None:
+    print(val)
+
+def PrintConstant(val: int) -> None:
+    print(val)
+
 ###############################################################################
 # Main Functionality
 # This code will never be executed from a primary console. Ideally this will
