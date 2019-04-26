@@ -25,7 +25,7 @@ def main() -> None:
     SymbolTable.CODE = parsed_data['code']
     # SymbolTable.PrintTable()
 
-    generator = Generator(folder='meta_data')
+    generator = Generator()
     ###########################################################################
     # At this point, we will create a new meta folder, which will contain a
     # file that contains the Python code within the .pyflex file, a meta driver
@@ -34,16 +34,23 @@ def main() -> None:
     #
     # NOTE not sure if this should be part of the Generator init, but
     # if not, it's fine here.
-    if os.path.isfile(generator.path_temp):
-        EasyFileIO.CopyFile(original=generator.path_temp,
-                            copy=generator.path_meta)
-        EasyFileIO.LinesToFile(filename=generator.path_main,
+    if os.path.isfile(generator.path_template):
+        EasyFileIO.CreateEmptyFile(filename=generator.file_main)
+        EasyFileIO.LinesToFile(filename=generator.file_main,
                                lines=(lines for lines in SymbolTable.CODE))
+        EasyFileIO.AppendToFile(filename=generator.file_main, lines=['\n'])
+        EasyFileIO.AppendToFile(filename=generator.file_main,
+                                lines=EasyFileIO.FileToLines(generator.path_template))
+        #######################################################################
+        # This is outdated for the time being
+        # EasyFileIO.CopyFile(original=generator.path_temp,
+        #                     copy=generator.path_main)
 
     ###########################################################################
     # Used to test running a new Python environment to run the newly created
     # Python program
-    os.system('python3 meta_data/generated_main.py')
+    print("Entering Subprocess")
+    os.system('python3 generated_code.py')
 
 
 @atexit.register
