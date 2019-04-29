@@ -4,6 +4,7 @@
 #          ruleset to fit the ReGex rules.
 from enum import Enum
 from pytils import EasyFileIO
+import re
 
 
 class ParseState(Enum):
@@ -124,30 +125,33 @@ class Parser():
                 ret_dict['ruleset'].update({p_value[0]: p_value[1]})
 
         #######################################################################
-        # For parsing the 'instructions', we will follow a similar methodology.
-        # If there is a space in a specific string, join the list to create
-        # two element lists.
-        for value in sections_dict['instructions']:
-            p_value = value.strip(' \n').split()
-            if p_value != []:
-                if len(p_value) is not 2:
-                    # This case mitigates the space characters within the
-                    # string for keys NOTE will need to be extensively tested
-                    if '"' in p_value[0] and '"' in p_value[-2]:
-                        p_value[0] = " ".join(p_value[:-1])
-                        p_value = [p_value[0], p_value[-1]]
-                if '{' in p_value[0] and '}' in p_value[0]:
-                    key = p_value[0][p_value[0].find('{')+1:
-                                     p_value[0].find('}')]
-                    if ret_dict['ruleset'].get(key, None) is not None:
-                        # This replaces the key with the regex
-                        old = '{'+key+'}'
-                        new = ret_dict['ruleset'][key]
-                        p_value[0] = p_value[0].replace(old, new)
-                    else:
-                        print("Key: {} was not found, \
-                               assume literal".format(key))
-                ret_dict['instructions'].update({p_value[0]: p_value[1]})
+        # To correctly set up the regex, we need to dynamically replace the
+        # previously instated rules, so a lot of looping is neccessary.
+        # This is much more simplistic than the older method of doing it, and
+        # may actually boost performance.
+        for i in range(0, len(sections_dict['instructions'])):
+            for rule in ret_dict['ruleset']:
+                temp = ''
+                if rule in sections_dict['instructions'][i]:
+                    temp = '{' + rule + '}'
+                    sections_dict['instructions'][i] = (
+                        sections_dict['instructions'][i].replace(
+                            temp, ret_dict['ruleset'][rule])
+                    )
+        regex = []
+        functions = []
+        for i in sections_dict['instructions']:
+            if i is not '\n':
+                f_name = i.split(' ')[-1].replace('\n', '')
+                functions.append(f_name)
+                temp = i.split(' ')[:-2]
+                temp = [x for x in temp if x != '']
+                temp = ' '.join(temp)
+                regex.append(temp)
+        if len(functions) != len(regex):
+            exit(2)
+        for i in range(0, len(functions)):
+            ret_dict['instructions'].update({regex[i]: functions[i]})
 
         #######################################################################
         # We can just copy the code section of the input dictionary to the

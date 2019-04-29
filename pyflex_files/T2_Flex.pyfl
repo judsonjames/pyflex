@@ -8,22 +8,20 @@
 whitespace              [\t ]
 digit                   [0-9]
 const                   {digit}+
-alpha                   [A-Za-z]
+word                    [^\d\W]
+verb_tag                _V[.*+]
+noun_tag                _N[.*+]
 
 # end ruleset
 %%
 # start interpretation
-"test phrase"           PrintTest(val)
-{whitespace}+           Nothing()
-{alpha}                 PrintCharacter(val)
-{const}                 PrintConstant(val)
+{word}                  CountWords(text)
 
 # end interpretation
 %%
-# start code
-def PrintCharacter(val: str) -> None:
-    print(val)
+num_words = 0
 
-def PrintConstant(val: int) -> None:
-    print(val)
-# end code
+def CountWords(text: str) -> None:
+    global num_words
+    num_words += 1
+    print('NUM WORDS: {}'.format(num_words))

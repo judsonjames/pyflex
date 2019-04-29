@@ -1,0 +1,36 @@
+###############################################################################
+# Authors: Judson James, Peyton Chandarana
+# Purpose: Example of pyflex file, giving the syntax ruleset and their
+#          interpretations.
+###############################################################################
+
+whitespace      [\t ]
+digit           [0-9]
+integer         {digit}+
+word            [a-zA-Z]*
+verb            {word}_[^Nn\t\n]*[V]+[^Nn\t\n]*
+
+%%
+
+{verb}          IncrementVerbCounter(text)
+
+%%
+
+import atexit
+
+verb_count = 0
+verb_list = []
+
+def IncrementVerbCounter(text):
+  global verb_count
+  global verb_list
+  verb_count += 1
+  verb_list.append(text)
+
+def PrintVerbCount():
+  print("Found " + str(verb_count) + " verbs!")
+  print(verb_list)
+
+@atexit.register
+def EndProgram() -> None:
+  PrintVerbCount()
