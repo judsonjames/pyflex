@@ -16,6 +16,12 @@ the specifications to parse a file and find matching expressions throughout an
 input file. When matches are found an optional action in the form of a python
 function can be called to perform some arbitrary task.
 
+################################################################################Caveats:
+  - Regexes cannot necessarily exclude some things.
+    For example T3_Flex.pyfl uses a regex that attempts to cut out noun-verbs
+    (the N in the tag section), but sometimes does not catch the N if it at
+    the end of the tag.
+
 ################################################################################
 File/Program Structure:
 
@@ -71,8 +77,26 @@ script with the input files that they wish to scan for matches. The results
 are the printed to standard output.
 
 ################################################################################
+Testing on COCA Data to count verbs:
+
+To test this program on the COCA data T3_Flex.pyfl should be passed in as the
+pyfl file into main.py after entering the pipenv shell.
+
+python3 main.py pyflex_file/T3_Flex.pyfl
+
+Now the code is generated for the specifications in the pyfl file and you can
+run the generated code.
+
+python3 generated_code.py <zoutFILE## COCA Files>
+
+This will count the verbs in the COCA file and then print the total count as
+well as a list of the verbs that matched. (could not get all noun-verbs to 
+be excluded due to caveat of regular expressions)
+
+################################################################################
 Future Improvements:
   - Implement a way for a user to use pyflex as a module.
   - Speed/efficiency improvements.
   - Enable user to define code before the ruleset to be used later on (preamble)
+  - Enable user to call some code natively after completing scan
 ################################################################################

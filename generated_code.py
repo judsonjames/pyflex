@@ -14,17 +14,23 @@ import re
 
 import atexit
 
-class Collection(object):
-    VERBS = list()
+verb_count = 0
+verb_list = []
+
+def IncrementVerbCounter(text):
+  global verb_count
+  global verb_list
+  verb_count += 1
+  verb_list.append(text)
+
+def PrintVerbCount():
+  print("Found " + str(verb_count) + " verbs!")
+  print(verb_list)
 
 @atexit.register
 def EndProgram() -> None:
-    print("Number of Verbs: {}".format(len(Collection.VERBS)))
-    print("End Program")
+  PrintVerbCount()
 
-def AddVerb(text: str) -> None:
-    Collection.VERBS.append(text)
-    
 
 
 ################################################################################
@@ -38,8 +44,8 @@ if __name__ == '__main__':
             lines = f.readlines()
         for line in lines:
             for word in line.split(' '):
-                if re.match(pattern='[a-zA-Z]*_[a-zA-Z]*V[a-zA-Z]*', string=word) is not None:
-                    AddVerb(word)
+                if re.match(pattern='[a-zA-Z]*_[^Nn\t\n]*[V]+[^Nn\t\n]*', string=word) is not None:
+                    IncrementVerbCounter(word)
 ################################################################################
 # END GENERATED CODE
 ################################################################################

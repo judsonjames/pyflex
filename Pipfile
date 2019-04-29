@@ -9,7 +9,6 @@ pep8 = "*"
 autopep8 = "*"
 
 [packages]
-autopip8 = "*"
 autopep8 = "==1.4.4"
 
 [requires]

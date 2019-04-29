@@ -8,24 +8,29 @@ whitespace      [\t ]
 digit           [0-9]
 integer         {digit}+
 word            [a-zA-Z]*
-verb            {word}_[a-zA-Z]*V[a-zA-Z]*
+verb            {word}_[^Nn\t\n]*[V]+[^Nn\t\n]*
 
 %%
 
-{verb}          AddVerb(text)
+{verb}          IncrementVerbCounter(text)
 
 %%
 
 import atexit
 
-class Collection(object):
-    VERBS = list()
+verb_count = 0
+verb_list = []
+
+def IncrementVerbCounter(text):
+  global verb_count
+  global verb_list
+  verb_count += 1
+  verb_list.append(text)
+
+def PrintVerbCount():
+  print("Found " + str(verb_count) + " verbs!")
+  print(verb_list)
 
 @atexit.register
 def EndProgram() -> None:
-    print("Number of Verbs: {}".format(len(Collection.VERBS)))
-    print("End Program")
-
-def AddVerb(text: str) -> None:
-    Collection.VERBS.append(text)
-    
+  PrintVerbCount()

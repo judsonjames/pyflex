@@ -2,8 +2,13 @@
 
 ## How to Run
 - Clone Repository
-- Ensure that you have Pipenv and Python3.7 installed on your machine
+  ```bash
+  # This repository uses a submodule called pytils, so the clone needs
+  # to be recursive
+  git clone --recurse-submodules https://github.com/judsonjames/pyflex
   ```
+- Ensure that you have Pipenv and Python3.7 installed on your machine
+  ```bash
   # Installs pipenv to your Pip
   pip3 install pipenv
 
