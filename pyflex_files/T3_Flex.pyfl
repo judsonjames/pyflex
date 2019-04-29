@@ -1,0 +1,31 @@
+###############################################################################
+# Authors: Judson James, Peyton Chandarana
+# Purpose: Example of pyflex file, giving the syntax ruleset and their
+#          interpretations.
+###############################################################################
+
+whitespace      [\t ]
+digit           [0-9]
+integer         {digit}+
+word            [a-zA-Z]*
+verb            {word}_[a-zA-Z]*V[a-zA-Z]*
+
+%%
+
+{verb}          AddVerb(text)
+
+%%
+
+import atexit
+
+class Collection(object):
+    VERBS = list()
+
+@atexit.register
+def EndProgram() -> None:
+    print("Number of Verbs: {}".format(len(Collection.VERBS)))
+    print("End Program")
+
+def AddVerb(text: str) -> None:
+    Collection.VERBS.append(text)
+    
